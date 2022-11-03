@@ -1,4 +1,4 @@
-package com.bptn.models;
+package com.bptn.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

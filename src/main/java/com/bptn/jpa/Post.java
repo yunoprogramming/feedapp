@@ -1,4 +1,4 @@
-package com.bptn.models;
+package com.bptn.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Post")
+@Table(name = "\"Post\"")
 public class Post {
 
     @Id
