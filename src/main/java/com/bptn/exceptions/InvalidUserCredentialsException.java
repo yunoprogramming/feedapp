@@ -7,8 +7,11 @@ public class InvalidUserCredentialsException extends Exception {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public InvalidUserCredentialsException() {
+        super();
+    }
+
     public InvalidUserCredentialsException(String errorMessage) {
         logger.debug(errorMessage);
-
     }
 }

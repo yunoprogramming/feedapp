@@ -7,8 +7,11 @@ public class InvalidPostException extends Exception {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public InvalidPostException() {
+        super();
+    }
+
     public InvalidPostException(String errorMessage) {
         logger.debug(errorMessage);
-
     }
 }

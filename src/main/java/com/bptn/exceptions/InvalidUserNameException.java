@@ -7,8 +7,11 @@ public class InvalidUserNameException extends Exception {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public InvalidUserNameException() {
+        super();
+    }
+
     public InvalidUserNameException(String errorMessage) {
         logger.debug(errorMessage);
-
     }
 }
