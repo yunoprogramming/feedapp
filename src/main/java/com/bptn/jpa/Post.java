@@ -3,6 +3,8 @@ package com.bptn.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,17 +18,11 @@ public class Post {
     @Column(name = "\"postType\"")
     String postType;
 
-    @Column(name = "\"usernameKey\"")
-    String usernameKey;
+    @ManyToOne
+    @JoinColumn(name = "\"usernameKey\"")
+    private UserID userId;
 
     public Post() {
-        super();
-    }
-
-    public Post(String postID, String postType, String usernameKey) {
-        this.postID = postID;
-        this.postType = postType;
-        this.usernameKey = usernameKey;
     }
 
     public String getPostID() {
@@ -45,17 +41,13 @@ public class Post {
         this.postType = postType;
     }
 
-    public String getUsernameKey() {
-        return usernameKey;
+    public UserID getUserId() {
+        return this.userId;
     }
 
-    public void setUsernameKey(String usernameKey) {
-        this.usernameKey = usernameKey;
+    public void setUserId(UserID userId) {
+        this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "Post [postID=" + postID + ", postType=" + postType + ", usernameKey=" + usernameKey + "]";
-    }
 
 }

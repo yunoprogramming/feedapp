@@ -12,6 +12,7 @@ public class InvalidUserCredentialsException extends Exception {
     }
 
     public InvalidUserCredentialsException(String errorMessage) {
-        logger.debug(errorMessage);
+        super(errorMessage);
+        logger.debug("Invalid user credentials");
     }
 }

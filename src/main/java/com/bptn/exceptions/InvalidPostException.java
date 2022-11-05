@@ -12,6 +12,7 @@ public class InvalidPostException extends Exception {
     }
 
     public InvalidPostException(String errorMessage) {
-        logger.debug(errorMessage);
+        super(errorMessage);
+        logger.debug("Invalid post");
     }
 }

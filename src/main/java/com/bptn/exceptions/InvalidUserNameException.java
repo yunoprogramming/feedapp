@@ -12,6 +12,7 @@ public class InvalidUserNameException extends Exception {
     }
 
     public InvalidUserNameException(String errorMessage) {
-        logger.debug(errorMessage);
+        super(errorMessage);
+        logger.debug("Invalid username");
     }
 }

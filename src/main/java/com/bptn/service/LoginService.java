@@ -1,11 +1,12 @@
 package com.bptn.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
+import com.bptn.jpa.Post;
 import com.bptn.jpa.UserID;
 import com.bptn.repository.LoginRepository;
 
@@ -33,5 +34,12 @@ public class LoginService {
         }
 
         return message;
+    }
+
+    public List<Post> getPostsByUsername(String username) {
+
+        Optional<UserID> opt = this.loginRepository.findById(username);
+
+        return opt.orElse(null).getPosts();
     }
 }
