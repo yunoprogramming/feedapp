@@ -16,6 +16,7 @@ public class FeedService {
     FeedRepository feedRepository;
 
     public List<Post> getPostsByUsername(String username) {
+        
         List<Post> posts = this.feedRepository.findByUserId(new UserID(username));
 
         posts = this.removeEmptyPosts(posts);

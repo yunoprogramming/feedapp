@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "\"Post\"")
 public class Post {
@@ -18,9 +20,10 @@ public class Post {
     @Column(name = "\"postType\"")
     String postType;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "\"usernameKey\"")
-    private UserID userId;
+    public UserID userId;
 
     public Post() {
     }
@@ -48,6 +51,5 @@ public class Post {
     public void setUserId(UserID userId) {
         this.userId = userId;
     }
-
 
 }

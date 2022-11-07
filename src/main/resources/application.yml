@@ -1,14 +1,17 @@
 server:
   port: 8081
-  
+
 logging.level:
-  web: OFF
-  '[com.bptn.controller]': DEBUG
-  '[org.hibernate]': DEBUG
-  
+  web: INFO
+  root: INFO
+  "[com.bptn]": DEBUG
+  "[org.hibernate]": INFO
+  "[org.hibernate.cfg.annotations.EntityBinder]": DEBUG
+  "[org.springframework.beans.factory.support.DefaultListableBeanFactory]": DEBUG
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/feedApp 
+    url: jdbc:postgresql://localhost:5432/feedApp
     username: postgres
     password: pg824
   jpa:
@@ -16,3 +19,10 @@ spring:
     hibernate:
       ddl-auto: validate
       naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+api:
+ key: 9e5f0da0691c4c5fa3b3f2b2bd40a978
+ base.url: https://newsapi.org/v2/everything
+
+
+
