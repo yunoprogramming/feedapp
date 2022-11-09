@@ -9,8 +9,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.bptn.exceptions.InvalidRequestException;
 import com.bptn.exceptions.InvalidUserNameException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@ExceptionHandler(InvalidUserNameException.class)
@@ -21,6 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
+	
 	@ExceptionHandler(InvalidRequestException.class)
 	public ResponseEntity<String> handleInvalidRequestExceptions(Exception ex, WebRequest request){
 		

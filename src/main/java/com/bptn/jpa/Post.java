@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +25,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "\"usernameKey\"")
     public UserID userId;
+
+    @OneToOne(mappedBy = "post")
+    private ImageMetaData imageMetaData;
 
     public Post() {
     }
@@ -50,6 +54,14 @@ public class Post {
 
     public void setUserId(UserID userId) {
         this.userId = userId;
+    }
+
+    public ImageMetaData getImageMetaData() {
+        return imageMetaData;
+    }
+
+    public void setImageMetaData(ImageMetaData imageMetaData) {
+        this.imageMetaData = imageMetaData;
     }
 
 }

@@ -3,6 +3,8 @@ package com.bptn.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,22 +30,22 @@ public class ImageMetaData {
     @Column(name = "resolution")
     String resolution;
 
-    @Column(name = "\"postKey\"")
-    String postKey;
+    @OneToOne
+    @JoinColumn(name = "\"postKey\"")
+    Post post;
 
     public ImageMetaData() {
         super();
     }
 
     public ImageMetaData(String imageID, String imageName, String imageSize, String imageFormat, String imageDate,
-            String resolution, String postKey) {
+            String resolution) {
         this.imageID = imageID;
         this.imageName = imageName;
         this.imageSize = imageSize;
         this.imageFormat = imageFormat;
         this.imageDate = imageDate;
         this.resolution = resolution;
-        this.postKey = postKey;
     }
 
     public String getImageID() {
@@ -94,19 +96,19 @@ public class ImageMetaData {
         this.resolution = resolution;
     }
 
-    public String getPostKey() {
-        return postKey;
+    public Post getPost() {
+        return post;
     }
 
-    public void setPostKey(String postKey) {
-        this.postKey = postKey;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     @Override
     public String toString() {
         return "ImageMetaData [imageID=" + imageID + ", imageName=" + imageName + ", imageSize=" + imageSize
                 + ", imageFormat=" + imageFormat + ", imageDate=" + imageDate + ", resolution=" + resolution
-                + ", postKey=" + postKey + "]";
+                + "]";
     }
 
 }
