@@ -30,7 +30,7 @@ public class FeedController {
         return posts;
     }
 
-    @GetMapping("/posts/postId/{postID}")
+    @GetMapping("/posts/postID/{postID}")
     public List<Post> getPostsByPostID(@PathVariable("postID") String postID) {
 
         logger.debug("Executing getPostsByPostID API");
@@ -41,11 +41,11 @@ public class FeedController {
     }
 
     @GetMapping("/posts/postType/{postType}")
-    public List<Post> getPostsbyPostType(@PathVariable("postType") String postType) {
+    public List<Post> getPostsByPostType(@PathVariable("postType") String postType) {
 
-        logger.debug("Executing getPostsbyPostType API");
+        logger.debug("Executing getPostsByPostType API");
 
-        List<Post> posts = this.feedService.getPostsbyPostType(postType);
+        List<Post> posts = this.feedService.getPostsByPostType(postType);
 
         return posts;
     }

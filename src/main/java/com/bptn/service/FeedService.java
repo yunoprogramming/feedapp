@@ -16,7 +16,7 @@ public class FeedService {
     FeedRepository feedRepository;
 
     public List<Post> getPostsByUsername(String username) {
-        
+
         List<Post> posts = this.feedRepository.findByUserId(new UserID(username));
 
         posts = this.removeEmptyPosts(posts);
@@ -25,14 +25,14 @@ public class FeedService {
     }
 
     public List<Post> getPostsByPostID(String postID) {
-        List<Post> posts = this.feedRepository.findByPostID(postID);
+        List<Post> posts = this.feedRepository.findByPostID(new String(postID));
 
         posts = this.removeEmptyPosts(posts);
 
         return posts;
     }
 
-    public List<Post> getPostsbyPostType(String postType) {
+    public List<Post> getPostsByPostType(String postType) {
         List<Post> posts = this.feedRepository.findByPostType(postType);
 
         posts = this.removeEmptyPosts(posts);

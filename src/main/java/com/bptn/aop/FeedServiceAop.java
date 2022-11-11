@@ -13,32 +13,32 @@ import org.springframework.stereotype.Component;
 public class FeedServiceAop {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Before(value = "execution(* com.bptn.service.FeedService.getPostsByUsername(..)) and args(username)")
 	public void beforeAdviceOneParam(JoinPoint joinPoint, String username) {
-		
+
 		logger.debug("Before method:" + joinPoint.getSignature());
 		logger.debug("Looking for User with username: {}", username);
-		
+
 	}
 
 	@After(value = "execution(* com.bptn.service.FeedService.getPostsByUsername(..)) and args(username)")
 	public void afterAdviceOneParam(JoinPoint joinPoint, String username) {
-		
+
 		logger.debug("After method:" + joinPoint.getSignature());
 		logger.debug("Successfully looked for User with username: {}", username);
-	}	
-	
-	@Before(value = "execution(* com.bptn.service.FeedService.getPostsByPostId(..))")
-	public void beforeAdviceMethodName(JoinPoint joinPoint) {
-		
-		logger.debug("Before method:" + joinPoint.getSignature());
-		logger.debug("Calling method().");		
 	}
-	
-	@After(value = "execution(* com.bptn.service.FeedService.getPostsByPostId(..))")
+
+	@Before(value = "execution(* com.bptn.service.FeedService.getPostsByPostID(..))")
+	public void beforeAdviceMethodName(JoinPoint joinPoint) {
+
+		logger.debug("Before method:" + joinPoint.getSignature());
+		logger.debug("Calling method().");
+	}
+
+	@After(value = "execution(* com.bptn.service.FeedService.getPostsByPostID(..))")
 	public void afterAdviceMethodName(JoinPoint joinPoint) {
-		
+
 		logger.debug("After method:" + joinPoint.getSignature());
 		logger.debug("Finishing method().");
 	}

@@ -51,7 +51,7 @@ public class FeedControllerAop {
             logger.debug("Arguments Received: {}", Arrays.toString(args));
         }
 
-        this.userService.validateUserId(args[0].toString());
+        // this.userService.validateUserId(args[0].toString());
 
         Object value = null;
 

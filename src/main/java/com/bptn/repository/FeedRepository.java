@@ -11,5 +11,6 @@ public interface FeedRepository extends JpaRepository<Post, String> {
     List<Post> findByUserId(UserID userId);
     List<Post> findByPostType(String postType);
     List<Post> findByPostID(String postID);
+    
 
 }
