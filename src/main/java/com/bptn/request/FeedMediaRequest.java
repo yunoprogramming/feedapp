@@ -9,7 +9,7 @@ public class FeedMediaRequest {
     String imageDate;
     String resolution;
     String postKey;
-    
+
     public String getImageId() {
         return imageId;
     }
@@ -53,6 +53,5 @@ public class FeedMediaRequest {
         this.postKey = postKey;
     }
 
-    
 
 }
