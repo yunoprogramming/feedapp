@@ -3,6 +3,8 @@ package com.bptn.jpa;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +24,9 @@ public class History {
     @Column(name = "date")
     String date;
 
-    @Column(name = "\"usernameKey\"")
-    String usernameKey;
+    @ManyToOne
+    @JoinColumn(name = "\"usernameKey\"")
+    public UserID userId;
 
     public History() {
         super();
@@ -34,7 +37,6 @@ public class History {
         this.postType = postType;
         this.postUpload = postUpload;
         this.date = date;
-        this.usernameKey = usernameKey;
     }
 
     public String getPostID() {
@@ -69,18 +71,18 @@ public class History {
         this.date = date;
     }
 
-    public String getUsernameKey() {
-        return usernameKey;
+    public UserID getUserId() {
+        return this.userId;
     }
 
-    public void setUsernameKey(String usernameKey) {
-        this.usernameKey = usernameKey;
+    public void setUserId(UserID userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
         return "History [postID=" + postID + ", postType=" + postType + ", postUpload=" + postUpload + ", date=" + date
-                + ", usernameKey=" + usernameKey + "]";
+                + "]";
     }
 
 }

@@ -30,6 +30,12 @@ public class Post {
     public ImageMetaData imageMetaData;
 
     public Post() {
+        super();
+    }
+
+    public Post(String postID) {
+        super();
+        this.postID = postID;
     }
 
     public String getPostID() {

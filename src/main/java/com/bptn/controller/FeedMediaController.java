@@ -36,20 +36,20 @@ public class FeedMediaController {
 
     }
 
-    @GetMapping("/images/ImageMetaData/{postKey}")
-    public Optional<ImageMetaData> getImageMediaByPostKey(@PathVariable("post") Post postKey) {
+    @GetMapping("/images/postKey/{postKey}")
+    public Optional<ImageMetaData> getImageMediaByPostKey(@PathVariable("postKey") Post post) {
 
         logger.debug("Executing getImageMediaByPostKey API");
 
-        Optional<ImageMetaData> images = this.feedMediaService.getImageMediaByPostKey(postKey);
+        Optional<ImageMetaData> images = this.feedMediaService.getImageMediaByPostKey(post);
 
         return images;
     }
 
-    @GetMapping("/images/imageId/{imageId}")
-    public Optional<ImageMetaData> getPostsImageMediByImageId(@PathVariable("imageID") String imageId) {
+    @GetMapping("/images/imageId/{imageID}")
+    public Optional<ImageMetaData> getPostsImageMediaByImageID(@PathVariable("imageID") String imageId) {
 
-        logger.debug("Executing getPostsImageMediByImageId API");
+        logger.debug("Executing getPostsImageMediaByImageID API");
 
         Optional<ImageMetaData> images = this.feedMediaService.getPostsImageMediaByImageID(imageId);
 

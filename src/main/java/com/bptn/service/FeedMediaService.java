@@ -22,15 +22,15 @@ public class FeedMediaService {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public Optional<ImageMetaData> getImageMediaByPostKey(Post postKey) {
+    public Optional<ImageMetaData> getImageMediaByPostKey(Post post) {
 
-        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByPost(postKey);
+        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByPost(post);
 
         return images;
     }
 
     public Optional<ImageMetaData> getPostsImageMediaByImageID(String imageID) {
-
+        
         Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByImageID(imageID);
 
         return images;
