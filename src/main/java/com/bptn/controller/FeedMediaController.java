@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bptn.jpa.ImageMetaData;
 import com.bptn.jpa.Post;
+import com.bptn.request.FeedMediaRequest;
 import com.bptn.service.FeedMediaService;
 
 @RestController
@@ -25,16 +26,16 @@ public class FeedMediaController {
     @Autowired
     FeedMediaService feedMediaService;
 
-    @PostMapping(value = "/images/create")
-    public ResponseEntity<?> createNewImage(@RequestBody ImageMetaData image) {
+    // @PostMapping(value = "/images/create")
+    // public ResponseEntity<?> createNewImage(@RequestBody FeedMediaRequest request) {
 
-        logger.debug("Creating New Image: {}", image);
+    //     logger.debug("Creating New Image: {}");
 
-        ImageMetaData images = this.feedMediaService.createNewImage(image);
+    //     ImageMetaData images = this.feedMediaService.createNewImage(request);
 
-        return new ResponseEntity<>(images, HttpStatus.OK);
+    //     return new ResponseEntity<>(images, HttpStatus.OK);
 
-    }
+    // }
 
     @GetMapping("/images/postKey/{postKey}")
     public Optional<ImageMetaData> getImageMediaByPostKey(@PathVariable("postKey") Post post) {

@@ -2,19 +2,16 @@ package com.bptn.service;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.bptn.jpa.ImageMetaData;
 import com.bptn.jpa.Post;
 import com.bptn.repository.FeedImageMetaDataRepository;
+import com.bptn.request.FeedMediaRequest;
 
 @Service
 public class FeedMediaService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     FeedImageMetaDataRepository feedImageMetaDataRepository;
@@ -30,31 +27,57 @@ public class FeedMediaService {
     }
 
     public Optional<ImageMetaData> getPostsImageMediaByImageID(String imageID) {
-        
+
         Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByImageID(imageID);
 
         return images;
     }
 
-    // List<Post> removeEmptyImages(List<Post> posts) {
+    public ImageMetaData createNewImage(FeedMediaRequest request) {
 
-    // posts.removeIf(p -> p.getPostType() == null || p.getPostType().isEmpty());
+        Post postKey = new Post(request.getPostKey());
 
-    // return posts;
-    // }
+        ImageMetaData imd = new ImageMetaData();
 
-    public ImageMetaData createNewImage(ImageMetaData post) {
+        imd.setImageID(request.getImageId());
+        imd.setImageDate(request.getImageDate());
+        imd.setImageFormat(request.getImageFormat());
+        imd.setImageName(request.getImageName());
+        imd.setImageSize(request.getImageSize());
+        imd.setResolution(request.getResolution());
+        imd.setPost(postKey);
 
-        String sql = "INSERT INTO \"ImageMetaData\"(imageID,imageName,\"imageSize\",\"imageFormat\",\"imageDate\",\"resolution\") "
-                + "VALUES(?,?,?,?,?,?)";
+        return this.feedImageMetaDataRepository.save(imd);
 
-        logger.debug("Image Created: {}", sql);
-
-        jdbcTemplate.update(sql, new Object[] { post.getImageID(), post.getImageName(),
-                post.getImageSize(), post.getImageSize(), post.getImageFormat(), post.getImageDate(),
-                post.getResolution() });
-
-        return post;
     }
 
 }
+
+// remove posts
+
+// List<Post> removeEmptyImages(List<Post> posts) {
+
+// posts.removeIf(p -> p.getPostType() == null || p.getPostType().isEmpty());
+
+// return posts;
+// }
+
+// insert image with JDBC
+
+// public ImageMetaData createNewImage(FeedMediaRequest request) {
+
+// String sql = "INSERT INTO
+// \"ImageMetaData\"(imageID,imageName,\"imageSize\",\"imageFormat\",\"imageDate\",\"resolution\")
+// "
+// + "VALUES(?,?,?,?,?,?)";
+
+// logger.debug("Image Created: {}");
+
+// jdbcTemplate.update(sql, new Object[] { request.getImageId(),
+// request.getImageName(),
+// request.getImageSize(), request.getImageSize(), request.getImageFormat(),
+// request.getImageDate(),
+// request.getResolution() });
+// return null;
+
+// }
