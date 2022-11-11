@@ -27,7 +27,7 @@ public class Post {
     public UserID userId;
 
     @OneToOne(mappedBy = "post")
-    private ImageMetaData imageMetaData;
+    public ImageMetaData imageMetaData;
 
     public Post() {
     }

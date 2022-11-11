@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.bptn.jpa.ImageMetaData;
 import com.bptn.jpa.Post;
-// import com.bptn.jpa.Post;
 import com.bptn.repository.FeedImageMetaDataRepository;
 
 @Service
@@ -23,16 +22,16 @@ public class FeedMediaService {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public Optional<ImageMetaData> getImageMediaByPostKey(String post) {
+    public Optional<ImageMetaData> getImageMediaByPostKey(Post postKey) {
 
-        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByPost(new String(post));
+        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByPost(postKey);
 
         return images;
     }
 
     public Optional<ImageMetaData> getPostsImageMediaByImageID(String imageID) {
 
-        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByImageID(new String(imageID));
+        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByImageID(imageID);
 
         return images;
     }
@@ -44,7 +43,7 @@ public class FeedMediaService {
     // return posts;
     // }
 
-    public void createNewImage(ImageMetaData post) {
+    public ImageMetaData createNewImage(ImageMetaData post) {
 
         String sql = "INSERT INTO \"ImageMetaData\"(imageID,imageName,\"imageSize\",\"imageFormat\",\"imageDate\",\"resolution\") "
                 + "VALUES(?,?,?,?,?,?)";
@@ -54,6 +53,8 @@ public class FeedMediaService {
         jdbcTemplate.update(sql, new Object[] { post.getImageID(), post.getImageName(),
                 post.getImageSize(), post.getImageSize(), post.getImageFormat(), post.getImageDate(),
                 post.getResolution() });
+
+        return post;
     }
 
 }
