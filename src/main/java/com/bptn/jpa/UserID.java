@@ -90,12 +90,12 @@ public class UserID {
     }
 
     public List<Post> getPosts() {
-		return posts;
-	}
+        return posts;
+    }
 
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
     @Override
     public String toString() {
