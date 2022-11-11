@@ -36,8 +36,8 @@ public class FeedMediaController {
 
     }
 
-    @GetMapping("/images/post/{postKey}")
-    public Optional<ImageMetaData> getImageMediaByPostKey(Post postKey) {
+    @GetMapping("/images/ImageMetaData/{postKey}")
+    public Optional<ImageMetaData> getImageMediaByPostKey(@PathVariable("post") Post postKey) {
 
         logger.debug("Executing getImageMediaByPostKey API");
 
