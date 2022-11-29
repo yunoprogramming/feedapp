@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping(value = "/users/{username}")
     public UserID findUser(@PathVariable String username) {
 
-        logger.debug("Fidning User, username: {}");
+        logger.debug("Finding User, username: {}");
 
         UserID user = null;
 
