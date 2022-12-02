@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.bptn.jpa.UserID;
+import com.bptn.models.UserID;
 import com.bptn.service.UserService;
 
 public class UserController {

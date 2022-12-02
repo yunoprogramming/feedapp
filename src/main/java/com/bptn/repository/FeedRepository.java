@@ -1,16 +1,16 @@
 package com.bptn.repository;
 
+import com.bptn.models.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import com.bptn.jpa.Post;
-import com.bptn.jpa.UserID;
-
 public interface FeedRepository extends JpaRepository<Post, String> {
+	
+    List<Post> findAllByUsernameKey(String username);
 
-    List<Post> findByUserId(UserID userId);
-    List<Post> findByPostType(String postType);
-    List<Post> findByPostID(String postID);
-    
+    Post findById(long postID);
+
+    Post findByPostType(String postType);
 
 }

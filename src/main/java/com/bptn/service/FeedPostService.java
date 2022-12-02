@@ -1,8 +1,12 @@
 package com.bptn.service;
 
-import java.util.Objects;
-import java.util.Random;
-
+import com.bptn.models.Post;
+import com.bptn.repository.FeedPostRepository;
+import com.bptn.request.FeedPostRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,97 +14,74 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.bptn.jpa.Post;
-import com.bptn.jpa.UserID;
-import com.bptn.repository.FeedPostRepository;
-import com.bptn.request.FeedPostRequest;
+import java.util.Objects;
+import java.util.Random;
 
 @Service
 public class FeedPostService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Value("${api.key}")
-    String apiKey;
+    private String apiKey;
 
     @Value("${api.base.url}")
-    String apiBaseUrl;
+    private String apiBaseUrl;
+    
+    private static final String POST_TYPE = "news";
 
     @Autowired
-    FeedPostRepository feedPostRepository;
+    private FeedPostRepository feedPostRepository;
 
-    @Autowired
-    RestTemplate restTemplate;
-
-    public Post getPostFormNewsAndSavePost(FeedPostRequest request) {
-
-        String url = this.buildAPIUrl(request);
-
+    public Post getPostFromNewsAndSavePost(FeedPostRequest feedPostRequest) {
+        String url = buildApiUrl(feedPostRequest);
+        LOGGER.debug("News Feed URL = {}", url);
         String feedResult = getFeedFromNewsAPI(url);
-
-        Post feed = storeFeed(feedResult, request);
-
-        return feed;
+        return storeFeed(feedResult, feedPostRequest);
     }
 
-    public String buildAPIUrl(FeedPostRequest request) {
-
-        StringBuilder urlBuilder = new StringBuilder();
-
-        urlBuilder.append(apiBaseUrl).append("?q=").append(request.getQueryKeyword());
-
-        if (request.getFromDate() != null && !request.getFromDate().isEmpty()) {
-            urlBuilder.append("&from=").append(request.getFromDate());
-        }
-
-        if (request.getToDate() != null && !request.getToDate().isEmpty()) {
-            urlBuilder.append("&to=").append(request.getToDate());
-        }
-
-        urlBuilder.append("&apiKey=").append(apiKey);
-        logger.debug(urlBuilder.toString());
-        return urlBuilder.toString();
-
-    }
-
-    public String getFeedFromNewsAPI(String url) {
-
-        String result = this.restTemplate.getForObject(url, String.class);
-
-        return result;
-    }
-
-    public Post storeFeed(String feedResult, FeedPostRequest request) {
-
-        UserID userId = new UserID(request.getUsername());
-
+    private Post storeFeed(String feedResult, FeedPostRequest feedPostRequest) {
         Post feed = new Post();
-
-        feed.setPostType(feedResult);
-        feed.setPostType(feedResult);
-        feed.setUserId(userId);
-        feed.setPostID(this.generatePostId(request));
-
-        logger.debug("Feed to be stored: {}", feed);
-
-        return this.feedPostRepository.save(feed);
+        feed.setPost(feedResult);
+        feed.setPostType(POST_TYPE);
+        feed.setUsernameKey(feedPostRequest.getUsername());
+        LOGGER.debug("Feed to be stored : {}", feed);
+        return feedPostRepository.save(feed);
     }
 
-    public String generatePostId(FeedPostRequest request) {
-
+    private String generatePostId(FeedPostRequest feedPostRequest) {
         Random random = new Random(System.currentTimeMillis());
-
         StringBuilder postIdBuilder = new StringBuilder();
-
         postIdBuilder.append(random.nextInt());
-        postIdBuilder.append(Objects.hashCode(request.getUsername() + " " + request.getQueryKeyword()));
-
+        postIdBuilder.append(Objects.hashCode(feedPostRequest.getUsername() + " " + feedPostRequest.getQueryKeyword()));
         String postId = postIdBuilder.toString();
-
         if (postId.startsWith("-")) {
-            postId = postId.substring(1);
+            return postId.substring(1);
         }
-
         return postId;
+    }
+
+    private String getFeedFromNewsAPI(String url) {
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(url, String.class);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement jsonElement = JsonParser.parseString(result);
+        String postDescription =
+                jsonElement.getAsJsonObject().get("articles").getAsJsonArray().get(0).getAsJsonObject().get("description").toString();
+        return postDescription;
+    }
+
+    private String buildApiUrl(FeedPostRequest feedPostRequest) {
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(apiBaseUrl);
+        urlBuilder.append("?q=").append(feedPostRequest.getQueryKeyword());
+        if (feedPostRequest.getFromDate() != null && !feedPostRequest.getFromDate().isEmpty()) {
+            urlBuilder.append("&from=").append(feedPostRequest.getFromDate());
+        }
+        if (feedPostRequest.getToDate() != null && !feedPostRequest.getToDate().isEmpty()) {
+            urlBuilder.append("&to=").append(feedPostRequest.getToDate());
+        }
+        urlBuilder.append("&apiKey=").append(apiKey);
+        return urlBuilder.toString();
     }
 }

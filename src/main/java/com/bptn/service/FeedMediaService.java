@@ -1,83 +1,68 @@
 package com.bptn.service;
 
-import java.util.Optional;
-
+import com.bptn.exceptions.InvalidImageMetaDataException;
+import com.bptn.models.ImageMetaData;
+import com.bptn.models.Post;
+import com.bptn.repository.FeedImageMetaDataRepository;
+import com.bptn.repository.FeedRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
-import com.bptn.jpa.ImageMetaData;
-import com.bptn.jpa.Post;
-import com.bptn.repository.FeedImageMetaDataRepository;
-import com.bptn.request.FeedMediaRequest;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class FeedMediaService {
 
-    @Autowired
-    FeedImageMetaDataRepository feedImageMetaDataRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private FeedImageMetaDataRepository feedImageMediaRepository;
 
-    public Optional<ImageMetaData> getImageMediaByPostKey(Post post) {
+    @Autowired
+    private FeedRepository feedRepository;
 
-        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByPost(post);
-
-        return images;
+    public List<ImageMetaData> getImageMediaByPostKey(long postKey) {
+        LOGGER.info("retrieving ImageMedia from DB by postkey");
+        Post post  = feedRepository.findById(postKey);
+        List<ImageMetaData> media = feedImageMediaRepository.findAllByPostKey(post);
+        media = removeEmptyImages(media);
+        LOGGER.debug("FeedImageMetaDataSerice={}", media);
+        return media;
     }
 
-    public Optional<ImageMetaData> getPostsImageMediaByImageID(String imageID) {
-
-        Optional<ImageMetaData> images = this.feedImageMetaDataRepository.findByImageID(imageID);
-
-        return images;
+    public ImageMetaData getPostsImageMediaByImageId(long imageID) throws InvalidImageMetaDataException {
+        LOGGER.info("retrieving Image information from DB by imageId");
+        ImageMetaData image = feedImageMediaRepository.findById(imageID);
+        if (image == null) {
+            throw new InvalidImageMetaDataException("ImageID doesn't exist");
+        }
+        LOGGER.debug("FeedImageMetaDataService={}", image);
+        return image;
     }
 
-    public ImageMetaData createNewImage(FeedMediaRequest request) {
 
-        Post postKey = new Post(request.getPostKey());
-
-        ImageMetaData imd = new ImageMetaData();
-
-        imd.setImageID(request.getImageId());
-        imd.setImageDate(request.getImageDate());
-        imd.setImageFormat(request.getImageFormat());
-        imd.setImageName(request.getImageName());
-        imd.setImageSize(request.getImageSize());
-        imd.setResolution(request.getResolution());
-        imd.setPost(postKey);
-
-        return this.feedImageMetaDataRepository.save(imd);
-
+  public ImageMetaData createNewImage(ImageMetaData imageInfo) {
+        ImageMetaData image = new ImageMetaData();
+        image.setImageName(imageInfo.getImageName());
+        image.setImageSize(imageInfo.getImageSize());
+        image.setImageFormat(imageInfo.getImageFormat());
+        image.setImageDate(imageInfo.getImageDate());
+        image.setResolution(imageInfo.getResolution());
+        image.setPostKey(imageInfo.getPostKey());
+        image = feedImageMediaRepository.save(image);
+        return image;
     }
 
+    private List<ImageMetaData> removeEmptyImages(List<ImageMetaData> images) {
+        List<ImageMetaData> resultImages = new LinkedList<>();
+        for (ImageMetaData img : images) {
+            if (img.getImageName() != null) {
+                resultImages.add(img);
+            }
+        }
+        return resultImages;
+    }
 }
-
-// remove posts
-
-// List<Post> removeEmptyImages(List<Post> posts) {
-
-// posts.removeIf(p -> p.getPostType() == null || p.getPostType().isEmpty());
-
-// return posts;
-// }
-
-// insert image with JDBC
-
-// public ImageMetaData createNewImage(FeedMediaRequest request) {
-
-// String sql = "INSERT INTO
-// \"ImageMetaData\"(imageID,imageName,\"imageSize\",\"imageFormat\",\"imageDate\",\"resolution\")
-// "
-// + "VALUES(?,?,?,?,?,?)";
-
-// logger.debug("Image Created: {}");
-
-// jdbcTemplate.update(sql, new Object[] { request.getImageId(),
-// request.getImageName(),
-// request.getImageSize(), request.getImageSize(), request.getImageFormat(),
-// request.getImageDate(),
-// request.getResolution() });
-// return null;
-
-// }
